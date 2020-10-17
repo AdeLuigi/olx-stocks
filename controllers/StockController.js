@@ -1,9 +1,10 @@
-const Chat = require('../models/Chat');
+const Stock = require('../models/Stock');
 
 module.exports = {
+
   async index(request, response) {
     try {
-      const services = await Chat.find();
+      const services = await Stock.find();
 
       return response.json(services);
     } catch (error) {
@@ -19,7 +20,7 @@ module.exports = {
         throw new Error('id not defined');
       }
 
-      const service = await Chat.findById(id);
+      const service = await Stock.findById(id);
 
       return response.status(200).json(service);
     } catch (error) {
@@ -28,11 +29,15 @@ module.exports = {
   },
 
   async store(request, response) {
-    const { stockOwner } = request.body;
+    const {
+        stockOwner,
+       
+    } = request.body;
 
     try {
       const userCreated = await Chat.create({
-        stockOwner
+        stockOwner,
+       
       });
 
       return response.status(201).json(userCreated);
@@ -49,13 +54,16 @@ module.exports = {
     const requestUpdate = request.body;
 
     try {
-      const serviceUpdate = await Chat.findById(id);
-      serviceUpdate.messages.push(requestUpdate);
-      serviceUpdate.save();
-
-      /*     if (serviceUpdate != null) {
+      const serviceUpdate = await Stock.findOneAndUpdate(
+        filterById,
+        requestUpdate,
+        {
+          new: true,
+        },
+      );
+      if (serviceUpdate != null) {
         delete serviceUpdate.password;
-      } */
+      }
       return response.status(200).json(serviceUpdate);
     } catch (error) {
       return response.status(400).json({ message: error });
@@ -63,13 +71,13 @@ module.exports = {
   },
   async destroy(request, response) {
     const { id } = request.params;
+    console.log(id);
     try {
-      const serviceDeleted = await Chat.findByIdAndDelete(id);
+      const serviceDeleted = await Stock.findByIdAndDelete(id);
 
       return response.json({ message: 'deletado' });
     } catch (error) {
       return response.status(400).json({ message: error });
     }
   },
-
 };
