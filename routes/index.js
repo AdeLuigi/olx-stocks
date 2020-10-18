@@ -13,8 +13,4 @@ routes.use('/chat', chatRoutes);
 routes.use('/stock', stockRoutes);
 
 
-/* routes.use('/user', userRoutes);
-routes.use('/chat', chatRoutes); */
-
-
 module.exports = routes;
